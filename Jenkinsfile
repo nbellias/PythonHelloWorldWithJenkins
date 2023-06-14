@@ -1,28 +1,33 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9-slim-buster' // Replace with your image details
-            args '-u root' // Additional volume mappings if needed
-        }
-    }
+    agent none
     stages {
+        stage('Build'){
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
+            steps {
+                sh 'python -m hello-world/app.py'
+            }
+        }
         stage('Setup') {
             steps {
                 sh 'pip install -r requirements.txt' // Install dependencies from requirements.txt
             }
         }
         stage('Run Tests') {
-            steps {
-                sh 'pytest hello-world/' // Run the tests using pytest or your preferred test runner
+            agent {
+                docker {
+                    image 'qnib/pytest'
+                }
             }
-        }
-        stage('Generate Reports') {
             steps {
-                sh 'pytest --junitxml=result.xml' // Generate test reports in JUnit XML format
+                sh 'pytest --verbose --junit-xml test-reports/results.xml hello-world/test_app.py'
             }
             post {
                 always {
-                    junit 'result.xml' // Publish the test results
+                    junit 'test-reports/results.xml'
                 }
             }
         }
