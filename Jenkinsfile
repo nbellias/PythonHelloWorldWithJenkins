@@ -11,11 +11,6 @@ pipeline {
                 sh 'python hello-world/app.py'
             }
         }
-        stage('Setup') {
-            steps {
-                sh 'pip install -r requirements.txt' // Install dependencies from requirements.txt
-            }
-        }
         stage('Run Tests') {
             agent {
                 docker {
