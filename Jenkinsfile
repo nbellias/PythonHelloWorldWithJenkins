@@ -8,7 +8,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'python -m hello-world/app.py'
+                sh 'python hello-world/app.py'
             }
         }
         stage('Setup') {
