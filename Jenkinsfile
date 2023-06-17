@@ -3,7 +3,7 @@ pipeline {
         dockerfile true
     }
     stages {
-        sstage('Prepare Environment') {
+        stage('Prepare Environment') {
             steps {
                 // Use ShiningPanda plugin to setup Python virtual environment
                 sh 'source venv/bin/activate'
