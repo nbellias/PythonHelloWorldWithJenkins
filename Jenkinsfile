@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker {
             image 'python:3.9.17-slim-bullseye'
+            args '-v $HOME/.m2:/root/.m2'
         }
     }
     stages {
