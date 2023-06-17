@@ -1,27 +1,17 @@
 pipeline {
     agent {
-        dockerfile true
+        docker {
+            image 'python:3.8-slim-buster'
+        }
     }
     stages {
-        stage('Clone sources') {
+        stage('Prepare Environment') {
             steps {
-                git branch: 'main', url: 'https://github.com/nbellias/PythonHelloWorldWithJenkins.git'
-            }
-        }
-        stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner -Dsonar.sources=.'
-                }
-            }
-        }
-        stage("Quality gate") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
-        }
-        stage('Prepare'){
-            steps {
+                // Use ShiningPanda plugin to setup Python virtual environment
+                sh 'pip install virtualenv'
+                sh 'virtualenv venv'
+                sh 'source venv/bin/activate'
+                sh 'pip install -r requirements.txt'
                 sh 'python hello-world/app.py'
             }
         }
