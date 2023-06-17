@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Prepare Environment') {
             steps {
-                sh 'venv/python hello-world/app.py'
+                sh 'venv/bin/python hello-world/app.py'
             }
         }
         stage('Run Tests') {
