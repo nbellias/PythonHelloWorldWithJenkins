@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Clone sources') {
             steps {
-                git branch: 'bad-code', url: 'https://github.com/nbellias/PythonHelloWorldWithJenkins.git'
+                git branch: 'main', url: 'https://github.com/nbellias/PythonHelloWorldWithJenkins.git'
             }
         }
         stage('SonarQube analysis') {
