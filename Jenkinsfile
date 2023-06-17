@@ -1,12 +1,15 @@
 pipeline {
-    agent none
+    agent {
+        docker {
+            image 'python:2-alpine'
+        }
+    }
     stages {
         stage('Clone sources') {
             steps {
                 git branch: 'bad-code', url: 'https://github.com/nbellias/PythonHelloWorldWithJenkins.git'
             }
         }
-
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
@@ -20,22 +23,13 @@ pipeline {
             }
         }
         stage('Build'){
-            agent {
-                docker {
-                    image 'python:2-alpine'
-                }
-            }
             steps {
                 sh 'python hello-world/app.py'
             }
         }
         stage('Run Tests') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
-                }
-            }
             steps {
+                sh 'pip install -r requirements.txt'
                 sh 'pytest --verbose --junit-xml test-reports/results.xml hello-world/test_app.py'
             }
             post {
