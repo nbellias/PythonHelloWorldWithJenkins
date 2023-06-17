@@ -1,6 +1,24 @@
 pipeline {
     agent none
     stages {
+        stage('Clone sources') {
+            steps {
+                git branch: 'bad-code', url: 'https://github.com/nbellias/PythonHelloWorldWithJenkins.git'
+            }
+        }
+
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "./gradlew sonarqube"
+                }
+            }
+        }
+        stage("Quality gate") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
         stage('Build'){
             agent {
                 docker {
