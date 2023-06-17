@@ -1,17 +1,12 @@
 pipeline {
     agent {
-        docker {
-            image 'python:3.8-slim-buster'
-        }
+        dockerfile true
     }
     stages {
-        stage('Prepare Environment') {
+        sstage('Prepare Environment') {
             steps {
                 // Use ShiningPanda plugin to setup Python virtual environment
-                sh 'pip install virtualenv'
-                sh 'virtualenv venv'
                 sh 'source venv/bin/activate'
-                sh 'pip install -r requirements.txt'
                 sh 'python hello-world/app.py'
             }
         }
