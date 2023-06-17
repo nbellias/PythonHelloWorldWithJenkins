@@ -10,13 +10,12 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps {
-                def scannerHome = tool 'SonarQube Scanner 2.8';
                 withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh 'sonar-scanner -Dsonar.sources=.'
                 }
             }
         }
-        stage('Quality gate') {
+        stage("Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
             }
