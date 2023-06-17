@@ -1,18 +1,18 @@
 pipeline {
     agent {
         docker {
-            image 'python:latest'
+            image 'python:3.9.17-slim-bullseye'
         }
     }
     stages {
-        stage('Build'){
+        stage('Prepare'){
             steps {
+                sh 'pip install -r requirements.txt'
                 sh 'python hello-world/app.py'
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'pip install -r requirements.txt'
                 sh 'pytest --verbose --junit-xml test-reports/results.xml hello-world/test_app.py'
             }
             post {
