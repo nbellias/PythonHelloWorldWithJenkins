@@ -5,9 +5,7 @@ pipeline {
     stages {
         stage('Prepare Environment') {
             steps {
-                // Use ShiningPanda plugin to setup Python virtual environment
-                sh 'source venv/bin/activate'
-                sh 'python hello-world/app.py'
+                sh 'venv/python hello-world/app.py'
             }
         }
         stage('Run Tests') {
